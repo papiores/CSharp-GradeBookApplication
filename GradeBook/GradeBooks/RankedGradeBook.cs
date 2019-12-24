@@ -1,4 +1,6 @@
 ﻿using GradeBook.Enums;
+using System;
+using System.Linq;
 
 namespace GradeBook.GradeBooks
 {
@@ -36,7 +38,26 @@ namespace GradeBook.GradeBooks
 
         public override char GetLetterGrade(double averageGrade)
         {
-            return base.GetLetterGrade(averageGrade);
+            if(Students.Count < 5)
+            {
+                throw new InvalidOperationException("Invalid student count for letter grade.");
+            }
+            var grade = 'F';
+            var percentile = ((decimal)Students.Select(s => s.AverageGrade >= averageGrade).ToList().Count) / Students.Count;
+            grade = percentile <= .8m
+                ? 'D'
+                : grade;
+            grade = percentile <= .6m
+                ? 'C'
+                : grade;
+            grade = percentile <= .4m
+                ? 'B'
+                : grade;
+            grade = percentile <= .2m
+                ? 'A'
+                : grade;
+
+            return grade;
         }
 
         public override string ToString()
