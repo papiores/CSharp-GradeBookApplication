@@ -42,7 +42,8 @@ namespace GradeBook.GradeBooks
             {
                 throw new InvalidOperationException("Invalid student count for letter grade.");
             }
-            var percentile = ((decimal)Students.Select(s => s.AverageGrade >= averageGrade).ToList().Count) / Students.Count;
+            var aboveAverage = Students.Where(s => s.AverageGrade >= averageGrade).ToList();
+            var percentile = aboveAverage.Count / (decimal)Students.Count;
             if(percentile <= .2m)
             {
                 return 'A';
