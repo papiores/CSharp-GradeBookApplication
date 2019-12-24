@@ -42,22 +42,25 @@ namespace GradeBook.GradeBooks
             {
                 throw new InvalidOperationException("Invalid student count for letter grade.");
             }
-            var grade = 'F';
             var percentile = ((decimal)Students.Select(s => s.AverageGrade >= averageGrade).ToList().Count) / Students.Count;
-            grade = percentile <= .8m
-                ? 'D'
-                : grade;
-            grade = percentile <= .6m
-                ? 'C'
-                : grade;
-            grade = percentile <= .4m
-                ? 'B'
-                : grade;
-            grade = percentile <= .2m
-                ? 'A'
-                : grade;
+            if(percentile <= .2m)
+            {
+                return 'A';
+            }
+            else if ( percentile <= .4m)
+            {
+                return 'B';
+            }
+            else if ( percentile <= .6m)
+            {
+                return 'C';
+            }
+            else if ( percentile <= .8m)
+            {
+                return 'D';
+            }
 
-            return grade;
+            return 'F';
         }
 
         public override string ToString()
